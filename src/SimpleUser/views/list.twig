@@ -32,6 +32,9 @@
                     <div class="muted">
                         {{ user.email }}
                     </div>
+                    <div class="muted">
+                        <a href="{{path("user.delete", {'id': user.id})}}">Delete user</a></a>
+                    </div>
                 {% endif %}
             </div>
         </div>
