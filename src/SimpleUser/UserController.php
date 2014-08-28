@@ -229,7 +229,7 @@ class UserController
 			    $message = \Swift_Message::newInstance('message')
 				->setSubject('Wiadomosc z formularza kontaktowego')
 				->setFrom(array('kasjek.test@gmail.com' => 'Yolo Pizza'))
-				->setTo(array($user['email')])
+				->setTo(array($user['email']))
 				->setBody(
 					$app['twig']->render('@user/mailcontent.twig', array(
 					'id' => $id_zalogowanego_usera,
