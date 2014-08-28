@@ -386,7 +386,7 @@ class UserManager implements UserProviderInterface
     {
         $this->clearIdentityMap($user);
 
-        $this->conn->executeUpdate('DELETE FROM users WHERE id = ?', array($user->getId()));
+        //$this->conn->executeUpdate('DELETE FROM users WHERE id = ?', array($user->getId()));
     }
 
     /**
