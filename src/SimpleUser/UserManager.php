@@ -45,7 +45,10 @@ class UserManager implements UserProviderInterface
      */
     public function loadUserByUsername($username)
     {
-        $user = $this->findOneBy(array('email' => $username));
+        $user = $this->findOneBy(array(
+		'email' => $username,
+		'is_deleted' => 0
+		));
         if (!$user) {
             throw new UsernameNotFoundException(sprintf('Email "%s" does not exist.', $username));
         }
