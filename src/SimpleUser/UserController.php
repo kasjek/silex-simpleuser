@@ -186,6 +186,7 @@ class UserController
      * @return Response
      * @throws NotFoundHttpException if no user is found with that ID.
      */
+     
     public function editAction(Application $app, Request $request, $id)
     {
         $errors = array();
@@ -216,6 +217,31 @@ class UserController
                 $this->userManager->update($user);
                 $msg = 'Saved account information.' . ($request->request->get('password') ? ' Changed password.' : '');
                 $app['session']->getFlashBag()->set('alert', $msg);
+                
+                $formData = $form->getData();
+                
+                $transport = \Swift_SmtpTransport::newInstance('smtp.gmail.com', 465, "ssl")
+				->setUsername('kasjek.test@gmail.com')
+				->setPassword('dupatrupa');
+			
+		    	$mailer = \Swift_Mailer::newInstance($transport);
+		    	$id_zalogowanego_usera = $app['user']->getName();
+			    $message = \Swift_Message::newInstance('message')
+				->setSubject('Wiadomosc z formularza kontaktowego')
+				->setFrom(array('kasjek.test@gmail.com'))
+				->setTo(array($user['email')]))
+				->setBody(
+					$app['twig']->render('@user/mailcontent.twig', array(
+					'id' => $id_zalogowanego_usera,
+					'formData' => $formData)
+					),'text/html');
+				
+		        	$mailer->send($message);
+				
+					return $app['twig']->render('@user/thx.twig', array());
+                
+                
+                
             }
         }
 
