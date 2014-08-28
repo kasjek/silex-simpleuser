@@ -266,7 +266,10 @@ class UserController
 
         $numResults = $this->userManager->findCount();
 
-        $users = $this->userManager->findBy(array(), array(
+        $users = $this->userManager->findBy(array(
+			'is_deleted' => 0
+		
+		), array(
             'limit' => array($offset, $limit),
             'order_by' => array($order_by, $order_dir),
         ));
