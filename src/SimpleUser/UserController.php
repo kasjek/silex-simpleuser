@@ -221,8 +221,8 @@ class UserController
 		if ($request->request->get('password')) {   
 
 	                $transport = \Swift_SmtpTransport::newInstance('smtp.gmail.com', 465, "ssl")
-				->setUsername('kasjek.test@gmail.com')
-				->setPassword('dupatrupa');
+				->setUsername($app['email.address'])
+				->setPassword($app['email.password']);
 			
 		    	$mailer = \Swift_Mailer::newInstance($transport);
 
