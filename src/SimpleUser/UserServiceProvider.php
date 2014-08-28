@@ -96,7 +96,7 @@ class UserServiceProvider implements ServiceProviderInterface, ControllerProvide
             ->assert('id', '\d+');
 
         $controllers->method('GET|POST')->match('/{id}/edit', 'user.controller:editAction')
-            ->bind('user.edit')
+            ->bind('user.edit')->assert('id','\d+')
             ->before(function(Request $request) use ($app) {
                 if (!$app['security']->isGranted('EDIT_USER_ID', $request->get('id'))) {
                     throw new AccessDeniedException();
@@ -108,6 +108,9 @@ class UserServiceProvider implements ServiceProviderInterface, ControllerProvide
 
         $controllers->method('GET|POST')->match('/register', 'user.controller:registerAction')
             ->bind('user.register');
+	
+	$controllers->method('GET')->match('/delete', 'user.controller:deleteAction')
+            ->bind('user.delete')->assert('id', '\d+');
 
         $controllers->get('/login', 'user.controller:loginAction')
             ->bind('user.login');

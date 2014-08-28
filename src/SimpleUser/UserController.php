@@ -305,4 +305,29 @@ class UserController
         ));
 
     }
+
+    public function deleteAction(Application $app, Request $request)
+	{
+		$id = (int) $request->get('id', 0);
+		$user=$app['user.manager']->getUser($id);
+
+		if(!$user){
+
+			$app['session']->getFlashBag()->add(
+						'errors',
+						'User not found'
+						);
+					return $app->redirect($app['url_generator']->generate('user.list'), 301);
+		}
+		else{
+
+			$app['user.manager']->delete($user);
+			$app['session']->getFlashBag()->add(
+						'errors',
+						'Deleted user'
+						);
+					return $app->redirect($app['url_generator']->generate('user.list'), 301);	
+	
+		}
+	}
 }
