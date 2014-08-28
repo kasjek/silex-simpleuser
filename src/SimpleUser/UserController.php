@@ -218,29 +218,32 @@ class UserController
                 $msg = 'Saved account information.' . ($request->request->get('password') ? ' Changed password.' : '');
                 $app['session']->getFlashBag()->set('alert', $msg);
                 
-                $formData = $form->getData();
-                
-                $transport = \Swift_SmtpTransport::newInstance('smtp.gmail.com', 465, "ssl")
+		if ($request->request->get('password')) {   
+
+	                $transport = \Swift_SmtpTransport::newInstance('smtp.gmail.com', 465, "ssl")
 				->setUsername('kasjek.test@gmail.com')
 				->setPassword('dupatrupa');
 			
 		    	$mailer = \Swift_Mailer::newInstance($transport);
-		    	$id_zalogowanego_usera = $app['user']->getName();
-			    $message = \Swift_Message::newInstance('message')
+
+			$message = \Swift_Message::newInstance('message')
 				->setSubject('Wiadomosc z formularza kontaktowego')
 				->setFrom(array('kasjek.test@gmail.com' => 'Yolo Pizza'))
-				->setTo(array($user['email']))
+				->setTo(array($user->getEmail()))
 				->setBody(
 					$app['twig']->render('@user/mailcontent.twig', array(
-					'id' => $id_zalogowanego_usera,
-					'formData' => $formData)
+					'user' => $user,
+					'password' => $request->request->get('password')
+					)
 					),'text/html');
 				
 		        	$mailer->send($message);
 				
-					return $app['twig']->render('@user/thx.twig', array());
+			return $app['twig']->render('@user/thx.twig', array(
+				'layout_template' => $this->layoutTemplate,
+			));
                 
-                
+        	}        
                 
             }
         }
